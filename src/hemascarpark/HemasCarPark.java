@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -68,15 +69,17 @@ public class HemasCarPark extends Application {
         //primaryStage.initStyle(StageStyle.TRANSPARENT);
         
         BorderPane layout = new BorderPane();
-         Scene scene1 = new Scene(layout,1100,600,Color.rgb(0,0,0,0));
+        Scene scene1 = new Scene(layout,1100,600,Color.rgb(153,255,204));
         
         Group root = new Group();
-        Scene scene = new Scene(root,250,150,Color.rgb(0,0,0,0));
+        Scene scene = new Scene(root,250,150,Color.rgb(255,153,0));
         
-   
+        layout.setStyle("-fx-background-color:#e49b0f;");
+        //layout.setStyle("-fx-background-image:j1.png;");
         
-        //scene.getStylesheets().add(getClass().getResource("Styles.css").toExternalForm());
-        Color foreground = Color.rgb(255,255,255,0.9);
+        
+        //.getStylesheets().add("/styless.css");
+        Color foreground = Color.rgb(255,153,0);
         Rectangle background = new Rectangle(250,150);
         background.setX(0);
         background.setY(0);
@@ -84,7 +87,7 @@ public class HemasCarPark extends Application {
         background.setArcHeight(15);
         background.setArcWidth(15);
         
-        background.setFill(Color.rgb(0,0,0,0.55));
+        background.setFill(Color.rgb(255,153,0));
         background.setStroke(foreground);
         background.setStrokeWidth(1.5);  
         
@@ -165,7 +168,7 @@ public class HemasCarPark extends Application {
         layout.setTop(logout);
         BorderPane.setAlignment(logout, Pos.TOP_RIGHT);
        
-        BorderPane.setMargin(logout,new Insets(0,20,20,0));
+        BorderPane.setMargin(logout,new Insets(10,20,20,10));
         
         vBox.getChildren().addAll(label,username,password,btn);
         root.getChildren().addAll(background,vBox);
@@ -227,8 +230,20 @@ public class HemasCarPark extends Application {
         pw.setMaxWidth(300);
         
         
-        Button button= new Button("SAVE");
-        button.setFont(Font.font("SanSerif",13));
+        Button button= new Button("    SAVE    ");
+        button.setFont(Font.font("SanSerif",12));
+        button.setTextFill(Color.WHITE);
+        
+        BorderPane.setMargin(button,new Insets(10,60,60,10));
+        
+        //button.setStyle("-fx-normal-background:#3cbc53; -fx-hovered-color:#aaaaaa;");
+        
+        button.styleProperty().bind(Bindings.when(button.hoverProperty())
+                                      .then("-fx-background-color: #06660b")
+                                      .otherwise("-fx-background-color:#108f16"));
+        
+  //      button.getStylesheets().add("styless.css");
+  //        button.setStyle("-fx-normal-background: #101010; -fx-hovered-background: #aaaaaa;");
         
         button.setOnAction(e->{
             
@@ -321,6 +336,8 @@ public class HemasCarPark extends Application {
         Button showbtn=new Button("show Users");
         showbtn.setFont(Font.font("SanSerif",13));
         
+        
+        
         showbtn.setOnAction(e->{
         
             refreshTable();
@@ -370,7 +387,14 @@ public class HemasCarPark extends Application {
             
 //-----------------------------------delete user--------------------------------------------------
         Button deleteBtn = new Button("Delete record");
-        deleteBtn.setFont(Font.font("SanSerif",13));
+        deleteBtn.setFont(Font.font("SanSerif",12));
+        
+        
+        deleteBtn.styleProperty().bind(Bindings.when(deleteBtn.hoverProperty())
+                                      .then("-fx-background-color: #b5291f")
+                                      .otherwise("-fx-background-color:#ff3e30"));
+        deleteBtn.setTextFill(Color.WHITE);
+        
         deleteBtn.setOnAction(e->{
             
             
