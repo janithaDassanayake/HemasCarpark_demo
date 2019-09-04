@@ -69,7 +69,7 @@ public class HemasCarPark extends Application {
         //primaryStage.initStyle(StageStyle.TRANSPARENT);
         
         BorderPane layout = new BorderPane();
-        Scene scene1 = new Scene(layout,1100,600,Color.rgb(153,255,204));
+        Scene scene1 = new Scene(layout,1100,550,Color.rgb(153,255,204));
         
         Group root = new Group();
         Scene scene = new Scene(root,250,150,Color.rgb(255,153,0));
@@ -295,6 +295,7 @@ public class HemasCarPark extends Application {
         
         tv= new TableView<User>();
         
+        tv.setStyle("-fx-background-color: #ffeb7a;");
         TableColumn col0 = new TableColumn("ID");
         col0.setMinWidth(20);
         col0.setCellValueFactory(new PropertyValueFactory<>("ID"));
@@ -334,9 +335,13 @@ public class HemasCarPark extends Application {
         
         
         Button showbtn=new Button("show Users");
-        showbtn.setFont(Font.font("SanSerif",13));
+        showbtn.setFont(Font.font("SanSerif",12));
         
+        showbtn.styleProperty().bind(Bindings.when(showbtn.hoverProperty())
+                                      .then("-fx-background-color: #444296")
+                                      .otherwise("-fx-background-color:#633bdc"));
         
+        showbtn.setTextFill(Color.WHITE);
         
         showbtn.setOnAction(e->{
         
@@ -349,6 +354,8 @@ public class HemasCarPark extends Application {
             ComboBox comboBox = new ComboBox(options);
             comboBox.setMaxHeight(30);
         
+            comboBox.setStyle("-fx-background-color: #ffeb7a;");
+            
             comboBox.setOnAction(e->{
                 
                 
