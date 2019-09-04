@@ -232,7 +232,7 @@ public class HemasCarPark extends Application {
         
         button.setOnAction(e->{
             
-            if( IDvalidateNumber()& firstnameValidation()&LastnameValidation() &validateFildes()){
+            if(validateFildes()){
             try {
                 
                 String query="INSERT INTO User (ID,firstname ,lastname,email,username,memberType,password)VALUES(?,?,?,?,?,?,?)";
@@ -429,6 +429,7 @@ public class HemasCarPark extends Application {
 
 //------------------------------------------------------------------------------------------------  
 
+    /*
     
     private boolean IDvalidateNumber(){
         
@@ -449,6 +450,8 @@ public class HemasCarPark extends Application {
         }
         
     }
+    
+    
     
     
      private boolean firstnameValidation(){
@@ -492,29 +495,49 @@ public class HemasCarPark extends Application {
     
      }
     
-    
+    */
     
    private boolean validateFildes(){
        
+        Pattern p1 = Pattern.compile("[0-9]+");
+        Matcher m1= p1.matcher(id.getText());
+        
+        Pattern p2 = Pattern.compile("[a-zA-Z]+");
+        Matcher m2= p1.matcher(fn.getText());
   
-       if(fn.getText().isEmpty() ){
+        Pattern p3 = Pattern.compile("[a-zA-Z]+");
+        Matcher m3= p1.matcher(ln.getText());
+  
+      if((id.getText().isEmpty()) || !(m1.find() && m1.group().equals(id.getText())) ){
+           
+                      Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning!!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! please enter valid ID");
+                      alert.showAndWait();
+           
+                      return false;
+       }
+      
+      
+       if(fn.getText().isEmpty() ||(m2.find() && m2.group().equals(fn.getText())) ){
            
            Alert alert = new Alert(Alert.AlertType.WARNING);
                       alert.setTitle("Warning!!");
                       alert.setHeaderText(null);
-                      alert.setContentText("Hey! Please enter first name");
+                       alert.setContentText("Hey! Please enter Valid First Name");
                       alert.showAndWait();
            
                       return false;
            
            
        }
-        if(ln.getText().isEmpty() ){
+        if(ln.getText().isEmpty() || (m3.find() && m3.group().equals(ln.getText()))){
            
             Alert alert = new Alert(Alert.AlertType.WARNING);
                       alert.setTitle("Warning!!");
                       alert.setHeaderText(null);
-                      alert.setContentText("Hey! Please enter the first lastname");
+                      alert.setContentText("Hey! Please enter Valid Last Name");
                       alert.showAndWait();
            
                       return false;
