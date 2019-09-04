@@ -503,10 +503,10 @@ public class HemasCarPark extends Application {
         Matcher m1= p1.matcher(id.getText());
         
         Pattern p2 = Pattern.compile("[a-zA-Z]+");
-        Matcher m2= p1.matcher(fn.getText());
+        Matcher m2= p2.matcher(fn.getText());
   
         Pattern p3 = Pattern.compile("[a-zA-Z]+");
-        Matcher m3= p1.matcher(ln.getText());
+        Matcher m3= p3.matcher(ln.getText());
   
       if((id.getText().isEmpty()) || !(m1.find() && m1.group().equals(id.getText())) ){
            
@@ -520,7 +520,7 @@ public class HemasCarPark extends Application {
        }
       
       
-       if(fn.getText().isEmpty() ||(m2.find() && m2.group().equals(fn.getText())) ){
+       if(fn.getText().isEmpty() || !(m2.find() && m2.group().equals(fn.getText())) ){
            
            Alert alert = new Alert(Alert.AlertType.WARNING);
                       alert.setTitle("Warning!!");
@@ -532,7 +532,7 @@ public class HemasCarPark extends Application {
            
            
        }
-        if(ln.getText().isEmpty() || (m3.find() && m3.group().equals(ln.getText()))){
+        if(ln.getText().isEmpty() || !(m3.find() && m3.group().equals(ln.getText()))){
            
             Alert alert = new Alert(Alert.AlertType.WARNING);
                       alert.setTitle("Warning!!");
