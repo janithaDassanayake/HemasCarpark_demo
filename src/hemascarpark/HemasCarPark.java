@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -73,7 +75,7 @@ public class HemasCarPark extends Application {
         
    
         
-        scene.getStylesheets().add(getClass().getResource("Styles.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource("Styles.css").toExternalForm());
         Color foreground = Color.rgb(255,255,255,0.9);
         Rectangle background = new Rectangle(250,150);
         background.setX(0);
@@ -230,7 +232,7 @@ public class HemasCarPark extends Application {
         
         button.setOnAction(e->{
             
-            if(validateFildes()){
+            if( IDvalidateNumber()& firstnameValidation()&LastnameValidation() &validateFildes()){
             try {
                 
                 String query="INSERT INTO User (ID,firstname ,lastname,email,username,memberType,password)VALUES(?,?,?,?,?,?,?)";
@@ -262,6 +264,7 @@ public class HemasCarPark extends Application {
             }
             
              refreshTable();
+             
             
             }
         });
@@ -391,10 +394,9 @@ public class HemasCarPark extends Application {
                           
                           
            }
-            clearFields();
-            fillcomboFields();
-            refreshTable();
-          
+           clearFields();
+           refreshTable();
+         
         });
             
             HBox hBox = new HBox(5);
@@ -427,21 +429,141 @@ public class HemasCarPark extends Application {
 
 //------------------------------------------------------------------------------------------------  
 
+    
+    private boolean IDvalidateNumber(){
+        
+        Pattern p1 = Pattern.compile("[0-9]+");
+        Matcher m1= p1.matcher(id.getText());
+        
+        if(m1.find() && m1.group().equals(id.getText())){
+            return true;
+        }else{
+            
+             Alert alert = new Alert(Alert.AlertType.WARNING);
+             alert.setTitle("Warning!!");
+             alert.setHeaderText(null);
+             alert.setContentText("Hey! Please enter Valid ID");
+             alert.showAndWait();
+             
+            return false;
+        }
+        
+    }
+    
+    
+     private boolean firstnameValidation(){
+        
+        Pattern p1 = Pattern.compile("[a-zA-Z]+");
+        Matcher m1= p1.matcher(fn.getText());
+        
+        if(m1.find() && m1.group().equals(fn.getText())){
+            return true;
+        }else{
+            
+             Alert alert = new Alert(Alert.AlertType.WARNING);
+             alert.setTitle("Warning!!");
+             alert.setHeaderText(null);
+             alert.setContentText("Hey! Please enter Valid First Name");
+             alert.showAndWait();
+             
+            return false;
+        }
+        
+    }
+    
+     private boolean LastnameValidation(){
+        
+        Pattern p1 = Pattern.compile("[a-zA-Z]+");
+        Matcher m1= p1.matcher(ln.getText());
+        
+        if(m1.find() && m1.group().equals(ln.getText())){
+            return true;
+        }else{
+            
+             Alert alert = new Alert(Alert.AlertType.WARNING);
+             alert.setTitle("Warning!!");
+             alert.setHeaderText(null);
+             alert.setContentText("Hey! Please enter Valid Last Name");
+             alert.showAndWait();
+             
+            return false;
+        }
+        
+    
+     }
+    
+    
+    
    private boolean validateFildes(){
        
-       if(id.getText().isEmpty() |fn.getText().isEmpty() |ln.getText().isEmpty() |
-               em.getText().isEmpty() |un.getText().isEmpty() |mt.getText().isEmpty()| pw.getText().isEmpty()){
+  
+       if(fn.getText().isEmpty() ){
            
-                      Alert alert = new Alert(Alert.AlertType.WARNING);
+           Alert alert = new Alert(Alert.AlertType.WARNING);
                       alert.setTitle("Warning!!");
                       alert.setHeaderText(null);
-                      alert.setContentText("Hey! You can't Skip the Fields");
+                      alert.setContentText("Hey! Please enter first name");
+                      alert.showAndWait();
+           
+                      return false;
+           
+           
+       }
+        if(ln.getText().isEmpty() ){
+           
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning!!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! Please enter the first lastname");
                       alert.showAndWait();
            
                       return false;
            
        }
-       
+        if(em.getText().isEmpty() ){
+           
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning!!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! Please enter Email ");
+                      alert.showAndWait();
+           
+                      return false;
+           
+       }
+        if(un.getText().isEmpty()){
+           
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning!!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! You can't Skip the user name");
+                      alert.showAndWait();
+           
+                      return false;
+           
+       }
+        if(mt.getText().isEmpty() ){
+           
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning!!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! Please enter member type");
+                      alert.showAndWait();
+           
+                      return false;
+           
+       }
+        if(pw.getText().isEmpty() ){
+           
+           Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning!!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! Please enter password");
+                      alert.showAndWait();
+           
+                      return false;
+            
+       }
        return true;
    }
     
@@ -485,8 +607,11 @@ public class HemasCarPark extends Application {
     
 //------------------------------------------------------------------------------------------------
       
-    public void  fillcomboFields(){
-    
+    public void fillcomboFields(){
+   
+     
+      
+        
         try {
             String query ="select firstname from User";
             pStatement=connection.prepareStatement(query);
