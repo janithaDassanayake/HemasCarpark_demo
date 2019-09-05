@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package hemascarpark;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,17 +30,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -59,7 +63,7 @@ public class HemasCarPark extends Application {
     final ObservableList<User>data=FXCollections.observableArrayList();
     TableView<User>tv;
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
     
         
         primaryStage.setTitle("Hemas Car-Park System");
@@ -77,7 +81,6 @@ public class HemasCarPark extends Application {
         layout.setStyle("-fx-background-color:#e49b0f;");
         //layout.setStyle("-fx-background-image:j1.png;");
         
-        
         //.getStylesheets().add("/styless.css");
         Color foreground = Color.rgb(255,153,0);
         Rectangle background = new Rectangle(250,150);
@@ -91,6 +94,7 @@ public class HemasCarPark extends Application {
         background.setStroke(foreground);
         background.setStrokeWidth(1.5);  
         
+       
         VBox vBox = new VBox(5);
         vBox.setPadding(new Insets(10,0,0,10));
         Label label = new Label(" ");
@@ -129,7 +133,6 @@ public class HemasCarPark extends Application {
                      label.setText("Login failed");
                      
                 }
-                
                 username.clear();
                 password.clear();
                 
@@ -158,11 +161,9 @@ public class HemasCarPark extends Application {
         logout.setFont(Font.font("SanSerif",12));
         logout.setOnAction(e->{
         
-            
              primaryStage.setScene(scene);
              primaryStage.show();
-                    
-            
+             
     });
         
         layout.setTop(logout);
@@ -172,8 +173,11 @@ public class HemasCarPark extends Application {
         
         vBox.getChildren().addAll(label,username,password,btn);
         root.getChildren().addAll(background,vBox);
-        
        
+       
+        
+        
+        
         
         VBox field = new VBox(5);
         Label label1= new Label("Staff Registration");
@@ -612,26 +616,7 @@ public class HemasCarPark extends Application {
        }
         
         
-        
-        Pattern p5 = Pattern.compile("((?=.*\\d)(?=.[a-z])(?=.*[A-Z])(?=.*[@#$%]).{5,10})");
-        Matcher m5= p5.matcher(pw.getText());
-        
-         
-        if(pw.getText().isEmpty()||!(m5.matches())){
-           
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-                      alert.setTitle("Password Rejected!");
-                      alert.setHeaderText(null);
-                      alert.setContentText("Hey! password must contain atleast one (Digit , Lowercase, Uppercase and special characters ) length must be 5 to 10");
-                      alert.showAndWait();
-           
-                      return false;
-           
-       }
-        
-        
-        
-        Pattern p6 = Pattern.compile("(0|077|071|072|078|94)?[0-9]{7}");
+        Pattern p6 = Pattern.compile("(077|071|072|078|94)?[0-9]{7}");
         Matcher m6= p6.matcher(mobileN.getText());
         
         if(mobileN.getText().isEmpty()||!(m6.matches())){
@@ -646,17 +631,21 @@ public class HemasCarPark extends Application {
            
        }
             
-        if(un.getText().isEmpty()){
+        Pattern p7 = Pattern.compile("[A-Za-z0-9_]+");
+        Matcher m7= p7.matcher(un.getText());
+        
+        if(un.getText().isEmpty()||!(m7.matches())){
            
             Alert alert = new Alert(Alert.AlertType.WARNING);
                       alert.setTitle("Warning!!");
                       alert.setHeaderText(null);
-                      alert.setContentText("Hey! You can't Skip the user name");
+                      alert.setContentText("Hey!  the user name");
                       alert.showAndWait();
            
                       return false;
            
        }
+        
         if(mt.getText().isEmpty() ){
            
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -679,8 +668,29 @@ public class HemasCarPark extends Application {
                       return false;
             
        }
+        
+             
+        Pattern p5 = Pattern.compile("((?=.*\\d)(?=.[a-z])(?=.*[A-Z])(?=.*[@#$%]).{5,10})");
+        Matcher m5= p5.matcher(pw.getText());
+        
+         
+        if(pw.getText().isEmpty()||!(m5.matches())){
+           
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Password Rejected!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! password must contain atleast one (Digit , Lowercase, Uppercase and special characters ) length must be 5 to 10");
+                      alert.showAndWait();
+           
+                      return false;
+           
+       }
+        
+        
        return true;
    }
+   
+   
     
    //------------------------------------------------------------------------------------------------  
 
