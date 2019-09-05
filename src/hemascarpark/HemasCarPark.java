@@ -41,18 +41,18 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-
 /**
  *
  * @author janith
  */
+
 public class HemasCarPark extends Application {
     
     Connection connection;
     PreparedStatement pStatement= null;
     ResultSet resultSet= null;
     
-    TextField id,fn,ln ,em,un,mt;
+    TextField id,fn,ln ,em,un,mt,mobileN;
     PasswordField pw;
                 
     final ObservableList options =FXCollections.observableArrayList();
@@ -173,12 +173,7 @@ public class HemasCarPark extends Application {
         vBox.getChildren().addAll(label,username,password,btn);
         root.getChildren().addAll(background,vBox);
         
-        
-        
-        
-        
-        
-        
+       
         
         VBox field = new VBox(5);
         Label label1= new Label("Staff Registration");
@@ -211,6 +206,14 @@ public class HemasCarPark extends Application {
          em.setPromptText("email");
          em.setMaxWidth(300);
        
+            //----------------------------------------(1)------------------
+         mobileN = new TextField();
+         mobileN.setFont(Font.font("SanSerif",13));
+         mobileN.setPromptText("Mobile No");
+         mobileN.setMaxWidth(300);
+       
+         
+         
           //----------------------------------------(1)------------------
         un = new TextField();
         un.setFont(Font.font("SanSerif",15));
@@ -250,7 +253,7 @@ public class HemasCarPark extends Application {
             if(validateFildes()){
             try {
                 
-                String query="INSERT INTO User (ID,firstname ,lastname,email,username,memberType,password)VALUES(?,?,?,?,?,?,?)";
+                String query="INSERT INTO User (ID,firstname ,lastname,email,username,memberType,password,MobileNo)VALUES(?,?,?,?,?,?,?,?)";
                 pStatement=connection.prepareStatement(query);
                 
                 pStatement.setString(1,id.getText());
@@ -260,6 +263,7 @@ public class HemasCarPark extends Application {
                     pStatement.setString(5,un.getText());
                      pStatement.setString(6,mt.getText());
                       pStatement.setString(7,pw.getText());
+                       pStatement.setString(8,mobileN.getText());
                
                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
                       alert.setTitle("Information Dialog");
@@ -284,7 +288,7 @@ public class HemasCarPark extends Application {
             }
         });
         
-        field.getChildren().addAll(label1,id,fn,ln,em,un,mt,pw,button);
+        field.getChildren().addAll(label1,id,fn,ln,em,mobileN,un,mt,pw,button);
         layout.setCenter(field);
        
         BorderPane.setMargin(field,new Insets(5,30,5,40));
@@ -296,37 +300,52 @@ public class HemasCarPark extends Application {
         tv= new TableView<User>();
         
         tv.setStyle("-fx-background-color: #ffeb7a;");
+       
         TableColumn col0 = new TableColumn("ID");
-        col0.setMinWidth(20);
+        col0.setMinWidth(10);
         col0.setCellValueFactory(new PropertyValueFactory<>("ID"));
        //---------1 Column
+        
+        
         TableColumn col1 = new TableColumn("First Name");
-        col1.setMinWidth(60);
+        col1.setMinWidth(50);
         col1.setCellValueFactory(new PropertyValueFactory<>("firstname"));
        //---------2 Column
+        
         TableColumn col2 = new TableColumn("last name");
-        col2.setMinWidth(60);
+        col2.setMinWidth(50);
         col2.setCellValueFactory(new PropertyValueFactory<>("lastname"));
        //---------3 Column
+        
         TableColumn col3 = new TableColumn("email");
-        col3.setMinWidth(190);
+        col3.setMinWidth(120);
         col3.setCellValueFactory(new PropertyValueFactory<>("email"));
         //--------4 Column
+        
+        TableColumn col7 = new TableColumn("Mobile No");
+        col7.setMinWidth(70);
+        col7.setCellValueFactory(new PropertyValueFactory<>("MobileNo"));
+          
         TableColumn col4 = new TableColumn("User name");
-        col4.setMinWidth(100);
+        col4.setMinWidth(70);
         col4.setCellValueFactory(new PropertyValueFactory<>("username"));
         //---------5 Column
+         
         TableColumn col5 = new TableColumn("member Type");
-        col5.setMinWidth(80);
+        col5.setMinWidth(70);
         col5.setCellValueFactory(new PropertyValueFactory<>("memberType"));
         //---------6 Column
+        
         TableColumn col6 = new TableColumn("password");
-        col6.setMinWidth(80);
+        col6.setMinWidth(70);
         col6.setCellValueFactory(new PropertyValueFactory<>("password"));
       
-     
         
-        tv.getColumns().addAll(col0, col1, col2, col3, col4, col5, col6);
+      
+    
+        
+        tv.getColumns().addAll(col0,col1,col2,col3,col7,col4,col5,col6);
+        
         tv.setTableMenuButtonVisible(true);
         
         layout.setRight(tv);
@@ -376,6 +395,7 @@ public class HemasCarPark extends Application {
                         un.setText(resultSet.getString("username"));
                          mt.setText(resultSet.getString("memberType"));
                           pw.setText(resultSet.getString("password"));
+                          mobileN.setText(resultSet.getString("MobileNo"));
                     
                            //ID,firstname ,lastname,email,username,memberType,password
                           
@@ -505,7 +525,7 @@ public class HemasCarPark extends Application {
         
     }
     
-     private boolean LastnameValidation(){
+     private boolean PasswordValidation(){
         
         Pattern p1 = Pattern.compile("[a-zA-Z]+");
         Matcher m1= p1.matcher(ln.getText());
@@ -530,19 +550,13 @@ public class HemasCarPark extends Application {
     
    private boolean validateFildes(){
        
-        Pattern p1 = Pattern.compile("[0-9]+");
-        Matcher m1= p1.matcher(id.getText());
-        
-        Pattern p2 = Pattern.compile("[a-zA-Z]+");
-        Matcher m2= p2.matcher(fn.getText());
-  
-        Pattern p3 = Pattern.compile("[a-zA-Z]+");
-        Matcher m3= p3.matcher(ln.getText());
-  
+       Pattern p1 = Pattern.compile("[0-9]+");
+       Matcher m1= p1.matcher(id.getText());
+         
       if((id.getText().isEmpty()) || !(m1.find() && m1.group().equals(id.getText())) ){
            
                       Alert alert = new Alert(Alert.AlertType.WARNING);
-                      alert.setTitle("Warning!!");
+                      alert.setTitle("Wrong ID!!");
                       alert.setHeaderText(null);
                       alert.setContentText("Hey! please enter valid ID");
                       alert.showAndWait();
@@ -551,18 +565,25 @@ public class HemasCarPark extends Application {
        }
       
       
+        Pattern p2 = Pattern.compile("[a-zA-Z]+");
+        Matcher m2= p2.matcher(fn.getText());
+  
        if(fn.getText().isEmpty() || !(m2.find() && m2.group().equals(fn.getText())) ){
            
            Alert alert = new Alert(Alert.AlertType.WARNING);
-                      alert.setTitle("Warning!!");
+                      alert.setTitle("First name rejected!!");
                       alert.setHeaderText(null);
-                       alert.setContentText("Hey! Please enter Valid First Name");
+                      alert.setContentText("Hey! Please enter Valid First Name");
                       alert.showAndWait();
-           
+            
                       return false;
            
            
        }
+       
+        Pattern p3 = Pattern.compile("[a-zA-Z]+");
+        Matcher m3= p3.matcher(ln.getText());
+       
         if(ln.getText().isEmpty() || !(m3.find() && m3.group().equals(ln.getText()))){
            
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -574,17 +595,57 @@ public class HemasCarPark extends Application {
                       return false;
            
        }
-        if(em.getText().isEmpty() ){
+            
+        Pattern p4 = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\\b");
+        Matcher m4= p4.matcher(em.getText());
+        
+        if(em.getText().isEmpty()|| !(m4.find() && m4.group().equals(em.getText()))){
            
             Alert alert = new Alert(Alert.AlertType.WARNING);
                       alert.setTitle("Warning!!");
                       alert.setHeaderText(null);
-                      alert.setContentText("Hey! Please enter Email ");
+                      alert.setContentText("Hey! Please enter valid Email ");
                       alert.showAndWait();
            
                       return false;
            
        }
+        
+        
+        
+        Pattern p5 = Pattern.compile("((?=.*\\d)(?=.[a-z])(?=.*[A-Z])(?=.*[@#$%]).{5,10})");
+        Matcher m5= p5.matcher(pw.getText());
+        
+         
+        if(pw.getText().isEmpty()||!(m5.matches())){
+           
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Password Rejected!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! password must contain atleast one (Digit , Lowercase, Uppercase and special characters ) length must be 5 to 10");
+                      alert.showAndWait();
+           
+                      return false;
+           
+       }
+        
+        
+        
+        Pattern p6 = Pattern.compile("(0|077|071|072|078|94)?[0-9]{7}");
+        Matcher m6= p6.matcher(mobileN.getText());
+        
+        if(mobileN.getText().isEmpty()||!(m6.matches())){
+           
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning!!");
+                      alert.setHeaderText(null);
+                      alert.setContentText("Hey! Please enter Valid phone number");
+                      alert.showAndWait();
+           
+                      return false;
+           
+       }
+            
         if(un.getText().isEmpty()){
            
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -628,8 +689,7 @@ public class HemasCarPark extends Application {
     data.clear();
     
     try {
-                
-                String query="select * from User";
+                String query="select* from User";
                 pStatement=connection.prepareStatement(query);
                 resultSet=pStatement.executeQuery();
                 
@@ -643,7 +703,8 @@ public class HemasCarPark extends Application {
                              resultSet.getString("email"),
                              resultSet.getString("username"),
                              resultSet.getString("memberType"),
-                             resultSet.getString("password")
+                             resultSet.getString("password"),
+                             resultSet.getString("MobileNo")
                     ));
                      //paset data form the database
                     tv.setItems(data);
@@ -663,9 +724,6 @@ public class HemasCarPark extends Application {
       
     public void fillcomboFields(){
    
-     
-      
-        
         try {
             String query ="select firstname from User";
             pStatement=connection.prepareStatement(query);
@@ -683,18 +741,12 @@ public class HemasCarPark extends Application {
             Logger.getLogger(HemasCarPark.class.getName()).log(Level.SEVERE, null, ex);
         }
     
-    
-    
-    
-    
     }
 //------------------------------------------------------------------------------------------------    
     
       
     public void  clearFields(){
-        
         //clear text firld after inserting users;
-    
         id.clear();
         fn.clear();
         ln.clear();        
@@ -702,6 +754,7 @@ public class HemasCarPark extends Application {
         un.clear();
         mt.clear();
         pw.clear();
+        mobileN.clear();
            
     }
    

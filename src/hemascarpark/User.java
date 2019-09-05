@@ -17,11 +17,12 @@ public class User {
     private final SimpleStringProperty firstname;
     private final SimpleStringProperty lastname;
     private final SimpleStringProperty email;
+     private final SimpleStringProperty MobileNo;
     private final SimpleStringProperty username;
     private final SimpleStringProperty memberType;
     private final SimpleStringProperty password;
 
-    public User( String id, String fn,String ln,String em,String un,String mt,String pw) {
+    public User( String id, String fn,String ln,String em,String un,String mt,String pw, String mobileN) {
         
         this.ID =new SimpleStringProperty(id);
         this.firstname=new SimpleStringProperty(fn);
@@ -30,6 +31,7 @@ public class User {
         this.username = new SimpleStringProperty(un);
         this.memberType =  new SimpleStringProperty(mt);
         this.password =  new SimpleStringProperty(pw);
+        this.MobileNo =  new SimpleStringProperty(mobileN);
     }
     
     //--------------------------------------------------------------------
@@ -60,6 +62,14 @@ public class User {
     public String getPassword() {
         return password.get();
     }
+    
+    /**
+     *
+     * @return
+     */
+    public String getMobileNo() {
+        return MobileNo.get();
+    }
 
 //--------------------------------------------------------------------
     
@@ -69,29 +79,33 @@ public class User {
     }
 
     public void setfirstname(String fn) {
-        ID.set(fn);
+        firstname.set(fn);
     }
 
     public void setlastname(String ln) {
-        ID.set(ln);
+        lastname.set(ln);
     }
 
      public void setEmail(String em) {
-        ID.set(em);
+        email.set(em);
     }
 
     public void setUsername(String un) {
-        ID.set(un);
+        username.set(un);
     }
 
     public void setMemberType(String mt) {
-        ID.set(mt);
+        memberType.set(mt);
     }
 
     public void setPassword(String pw) {
-        ID.set(pw);
+        password.set(pw);
     }
 
+    
+    public void setMobileNo(String mobileN) {
+        MobileNo.set(mobileN);
+    }
    
     
     

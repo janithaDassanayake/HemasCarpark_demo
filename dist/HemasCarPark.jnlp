@@ -8,9 +8,12 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="HemasCarPark.jar" size="26139" download="eager" />
+    <jar href="HemasCarPark.jar" size="28368" download="eager" />
+    <jar href="lib\activation-1.1.1 (1).jar" size="69409" download="eager" />
+    <jar href="lib\mail-1.5.0-b01.jar" size="519087" download="eager" />
     <jar href="lib\mysql-connector-java-8.0.16.jar" size="2293144" download="eager" />
     <jar href="lib\sqlite-jdbc-3.27.2.1.jar" size="6012107" download="eager" />
+    <jar href="lib\twilio-7.9.1-jar-with-dependencies.jar" size="7531656" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="HemasCarPark" >
     <param name="requiredFXVersion" value="8.0+"/>
