@@ -78,7 +78,7 @@ public class HemasCarPark extends Application {
         Group root = new Group();
         Scene scene = new Scene(root,250,150,Color.rgb(255,153,0));
         
-        layout.setStyle("-fx-background-color:#e49b0f;");
+        layout.setStyle("-fx-background-color:#F0E68C;");
         //layout.setStyle("-fx-background-image:j1.png;");
         
         //.getStylesheets().add("/styless.css");
@@ -377,7 +377,7 @@ public class HemasCarPark extends Application {
             ComboBox comboBox = new ComboBox(options);
             comboBox.setMaxHeight(30);
         
-            comboBox.setStyle("-fx-background-color: #ffeb7a;");
+            comboBox.setStyle("-fx-background-color: #E9967A;");
             
             comboBox.setOnAction(e->{
                 
@@ -415,7 +415,97 @@ public class HemasCarPark extends Application {
                 
                 
             });
+     
             
+            
+        
+       tv.setOnMouseClicked(e->{
+               //this one for if we click table it will fetch data to the text areas
+                
+            try {
+                
+                User user = (User)tv.getSelectionModel().getSelectedItem();
+                
+                String query="select * from User where ID = ?";
+                
+                pStatement=connection.prepareStatement(query);
+                pStatement.setString(1,user.getID());
+                resultSet=pStatement.executeQuery();
+                
+                while (resultSet.next()) {                    
+                    
+                    id.setText(resultSet.getString("ID"));
+                     fn.setText(resultSet.getString("firstname"));
+                      ln.setText(resultSet.getString("lastname"));
+                       em.setText(resultSet.getString("email"));
+                        un.setText(resultSet.getString("username"));
+                         mt.setText(resultSet.getString("memberType"));
+                          pw.setText(resultSet.getString("password"));
+                          mobileN.setText(resultSet.getString("MobileNo"));
+                    
+                        
+                }
+                
+                pStatement.close();
+                resultSet.close();
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(HemasCarPark.class.getName()).log(Level.SEVERE, null, ex);
+            }
+ 
+            
+       });  
+       
+       
+       
+       tv.setOnKeyReleased(e->{
+           
+         //we can user arrow keys to fetch data to the fileds
+           
+           if(e.getCode()==KeyCode.UP||e.getCode()==KeyCode.DOWN){
+           
+           
+                     
+            try {
+                
+                User user = (User)tv.getSelectionModel().getSelectedItem();
+                
+                String query="select * from User where ID = ?";
+                
+                pStatement=connection.prepareStatement(query);
+                pStatement.setString(1,user.getID());
+                resultSet=pStatement.executeQuery();
+                
+                while (resultSet.next()) {                    
+                    
+                    id.setText(resultSet.getString("ID"));
+                     fn.setText(resultSet.getString("firstname"));
+                      ln.setText(resultSet.getString("lastname"));
+                       em.setText(resultSet.getString("email"));
+                        un.setText(resultSet.getString("username"));
+                         mt.setText(resultSet.getString("memberType"));
+                          pw.setText(resultSet.getString("password"));
+                          mobileN.setText(resultSet.getString("MobileNo"));
+                    
+                        
+                }
+                
+                pStatement.close();
+                resultSet.close();
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(HemasCarPark.class.getName()).log(Level.SEVERE, null, ex);
+            }
+ 
+            
+           
+  }
+       });
+       
+       
+       
+       
+       
 //-----------------------------------delete user--------------------------------------------------
         Button deleteBtn = new Button("Delete record");
         deleteBtn.setFont(Font.font("SanSerif",12));
@@ -424,10 +514,10 @@ public class HemasCarPark extends Application {
         deleteBtn.styleProperty().bind(Bindings.when(deleteBtn.hoverProperty())
                                       .then("-fx-background-color: #b5291f")
                                       .otherwise("-fx-background-color:#ff3e30"));
+        
         deleteBtn.setTextFill(Color.WHITE);
         
         deleteBtn.setOnAction(e->{
-            
             
                       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                       alert.setTitle("Confirmation !");
@@ -454,6 +544,13 @@ public class HemasCarPark extends Application {
          
         });
             
+        
+        
+        
+        
+        
+        
+        
             HBox hBox = new HBox(5);
             hBox.getChildren().addAll(showbtn,deleteBtn,comboBox);
          
@@ -475,7 +572,13 @@ public class HemasCarPark extends Application {
         TableColumn col7 = new TableColumn("First Name");
         col7.setMinWidth(110);
         col7.setCellValueFactory(new PropertyValueFactory<>("firstname"));
-       */ 
+       */
+            
+            
+            
+            
+            
+            
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -639,7 +742,7 @@ public class HemasCarPark extends Application {
             Alert alert = new Alert(Alert.AlertType.WARNING);
                       alert.setTitle("Warning!!");
                       alert.setHeaderText(null);
-                      alert.setContentText("Hey!  the user name");
+                      alert.setContentText("Hey! please enter valid user name");
                       alert.showAndWait();
            
                       return false;
