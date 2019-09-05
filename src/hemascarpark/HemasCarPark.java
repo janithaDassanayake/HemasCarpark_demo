@@ -10,14 +10,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -32,18 +36,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  *
@@ -56,7 +56,7 @@ public class HemasCarPark extends Application {
     PreparedStatement pStatement= null;
     ResultSet resultSet= null;
     
-    TextField id,fn,ln ,em,un,mt,mobileN;
+    TextField id,fn,ln ,em,un,mt,mobileN,searchF;
     PasswordField pw;
                 
     final ObservableList options =FXCollections.observableArrayList();
@@ -180,6 +180,15 @@ public class HemasCarPark extends Application {
         
         
         VBox field = new VBox(5);
+        
+        
+        searchF = new TextField();
+        searchF.setFont(Font.font("SanSerif",15));
+        searchF.setPromptText("Search user");
+        searchF.setMaxWidth(300);
+        
+        
+        
         Label label1= new Label("Staff Registration");
         label1.setFont(Font.font("SanSerif",15));
         
@@ -292,7 +301,7 @@ public class HemasCarPark extends Application {
             }
         });
         
-        field.getChildren().addAll(label1,id,fn,ln,em,mobileN,un,mt,pw,button);
+        field.getChildren().addAll(searchF,label1,id,fn,ln,em,mobileN,un,mt,pw,button);
         layout.setCenter(field);
        
         BorderPane.setMargin(field,new Insets(5,30,5,40));
@@ -546,6 +555,7 @@ public class HemasCarPark extends Application {
             
         
         
+      
         
         
         
@@ -577,8 +587,48 @@ public class HemasCarPark extends Application {
             
             
             
+        //search user methord    
+        FilteredList<User>flData;     
+        flData = new FilteredList<>(data, e-> true);
+        
+        searchF.setOnKeyReleased(e->{
             
+            searchF.textProperty().addListener((ObservableValue,oldValue,newValue)->{
+                
+                
+                flData.setPredicate((Predicate<? super User>)user->{
+                    if(newValue==null || newValue.isEmpty()){
+                        return true;
+                    }
+                    String lowerCaseFilter=newValue.toLowerCase(); 
+                    if(user.getID().contains(newValue)){
+                        return true;
+                    }else if(user.getFirstname().toLowerCase().contains(lowerCaseFilter)){
+                        
+                        return true;
+                    }else if(user.getLastname().toLowerCase().contains(lowerCaseFilter)){
+                        
+                        return true;
+                    }
+                    return false;
+                    
+                });
+                
+                
+                
+            });
             
+            SortedList<User>sorteddata=new SortedList<>(flData);
+            //campaire with table
+            sorteddata.comparatorProperty().bind(tv.comparatorProperty());
+            tv.setItems(sorteddata);
+            
+        });
+        
+        
+        
+        
+        
         primaryStage.setScene(scene);
         primaryStage.show();
     }
